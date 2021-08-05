@@ -23,7 +23,6 @@ import TextField from '@material-ui/core/TextField'
 import Toolbar from '@material-ui/core/Toolbar'
 import Tooltip from '@material-ui/core/Tooltip'
 import Typography from '@material-ui/core/Typography'
-// import {List as ListVirtual} from 'react-virtualized'
 import 'react-perfect-scrollbar/dist/css/styles.css'
 import PerfectScrollbar from 'react-perfect-scrollbar'
 import JSZip from 'jszip'
@@ -124,17 +123,13 @@ class FsUI extends PureComponent {
     }
 
     componentDidUpdate(previousProps) {
-        //console.log('componentDidUpdate: ', this.props)
+
         if (this.props.fsZippedFile !== null) {
             const zip = new JSZip()
             zip.loadAsync(this.props.fsZippedFile).then((contents) => {
-                //console.log('zip file contents: ', contents)
                 contents.forEach((relativePath, zipEntry) => {
-                    //console.log('zipEntry: ', zipEntry)
                     if (zipEntry.dir) { 
-                        //console.log('dir relativePath: ', relativePath)
                     } else {                  
-                        //console.log('file relativePath: ', relativePath)
                         zip.file(relativePath).async('uint8array').then((content) => {
                             this.fsAddItem(relativePath, content)
                         })
@@ -164,12 +159,9 @@ class FsUI extends PureComponent {
     }
 
     fsAddItem(filename, data) {
-        //console.log('fsAddItem filename: ', filename)
-        //console.log('fsAddItem data: ', data)
         let components = filename.split('/')
         const name = components.pop()
         const parent = this.fsBuildParent(this.props.fsCurrentDir, components.join('/'))
-        //console.log(`add file, parent: ${parent}, name: ${name}`)
         fs.transaction('rw', fs.files, async () => {
             await fs.files.add({
                 parent: parent,
@@ -183,7 +175,6 @@ class FsUI extends PureComponent {
             while (components.length > 0) {
                 const name = components.pop()
                 const parent = this.fsBuildParent(this.props.fsCurrentDir, components.join('/'))
-                //console.log(`put dir, parent: ${parent}, name: ${name}`)
                 fs.transaction('rw', fs.files, async () => {
                     await fs.files.put({
                         parent: parent,
@@ -209,7 +200,6 @@ class FsUI extends PureComponent {
     }
 
     fsListDir(dir) {
-        //console.log('fsListDir: ', dir)
         let listItems = []
         fs.transaction('r', fs.files, () => {
             fs.files.where({parent: dir, type: 'dir'}).sortBy('name').then((list) => { // first list all dirs
@@ -241,7 +231,6 @@ class FsUI extends PureComponent {
                     newSelected.push(item.name)
                 }
                 this.setState({selected: newSelected}, () => {
-                    //console.log('this.state.selected: ', this.state.selected)
                 })
                 
             })
@@ -252,13 +241,11 @@ class FsUI extends PureComponent {
         await fs.transaction('r', fs.files, async () => {
             this.state.selected.forEach( async (name, index) => {
                 await fs.files.where({parent: this.props.fsCurrentDir, name: name}).first((item) => {
-                    //console.log('item: ', item)
                     if (item !== undefined && item.type !== 'dir') {
                         this.files.push(item)
                     } else if (item.type === 'dir') {
                         fs.files.where('parent').startsWithIgnoreCase(item.name).each((e) => {
                             if (e !== undefined && e.type !== 'dir') {
-                                //console.log(' e: ', e) 
                                 this.files.push(e)
                             }
                         })
@@ -294,7 +281,6 @@ class FsUI extends PureComponent {
     }
 
     previousDir = () => {
-        //console.log('this.state.parentDir: ', this.state.parentDir)
         if (this.props.fsCurrentDir === '') return
         const nextDir = this.props.fsCurrentDir.split('/').slice(0, -1).join('/')
         this.props.setCurrentDir(nextDir)
@@ -357,9 +343,6 @@ class FsUI extends PureComponent {
     }
 
     saveItem = () => {
-        //console.log('this.props.localFileStore: ', this.props.localFileStore)
-        //console.log('this.props.fsFileStore: ', this.props.fsFileStore)
-        //console.log('this.props.activeDcm: ', this.props.activeDcm)
 
         if (this.props.localFileStore !== null) {
             const file = this.props.localFileStore
@@ -368,9 +351,7 @@ class FsUI extends PureComponent {
             reader.onload = (event) => {
                 let buffer = event.target.result
                 const ext = getFileExtReal(file.name)
-                //console.log('ext: ', ext)
                 const name = getFileName(getFileNameCorrect(file.name))   
-                //console.log('name: ', name)
                 let newName = name
                 let counter = 0
                 let done = false             
@@ -455,12 +436,9 @@ class FsUI extends PureComponent {
     }
 
     pasteItem = () => {
-        //console.log('this.state.selectedCopy: ', this.state.selectedCopy)
-        //console.log('this.props.fsCurrentList: ', this.props.fsCurrentList)
         this.state.selectedCopy.forEach(async (selected, index) => {
             await fs.files.where({parent: selected.parent, name: selected.name}).first((item) => {
                 if (item !== undefined) {
-                    //console.log('item: ', item)
                     if (item.type === 'dir') {
                         // create a new name
                         let counter = 0
@@ -477,8 +455,6 @@ class FsUI extends PureComponent {
                                 counter++
                             }
                         } while (!done)   
-                        //console.log('this.props.fsCurrentDir: ', this.props.fsCurrentDir)
-                        //console.log('newName: ', newName)
                         // copy the folder
                         fs.files.add({
                             parent: this.props.fsCurrentDir,
@@ -490,16 +466,11 @@ class FsUI extends PureComponent {
                         // copy all subdirs and files
                         const oldParent = this.fsBuildParent(item.parent, item.name) 
                         const newParent = this.fsBuildParent(this.props.fsCurrentDir, newName) 
-                        //console.log('oldParent: ', oldParent)
-                        //console.log('newParent: ', newParent)
                         let listItems = []
                         fs.files.where('parent').startsWithIgnoreCase(oldParent).each((e) => {
                             listItems.push(e)
                         }).then(() => {
                             listItems.forEach(e => {
-                                //console.log('listItems e: ', e)
-                                //const parent = e.parent.replace(oldParent, newParent)
-                                //console.log('parent: ', parent)
                                 fs.files.add({
                                     parent: newParent,
                                     name: e.name,
@@ -577,9 +548,7 @@ class FsUI extends PureComponent {
     }
 
     itemClick = (e, row) => {
-        //console.log('itemClick: ', row.name)
         const selectedIndex = this.state.selected.indexOf(row.name)
-        //console.log('selectedIndex: ', selectedIndex)
         let newSelected = []
         if (selectedIndex === -1) {
             newSelected = newSelected.concat(this.state.selected, row.name)
@@ -590,7 +559,6 @@ class FsUI extends PureComponent {
             )
         }
         this.setState({selected: newSelected}, () => {
-            //console.log('this.state.selected: ', this.state.selected)
         })
     }
 
@@ -788,10 +756,7 @@ class FsUI extends PureComponent {
                                                     <Icon path={mdiExportVariant} size={'1.2rem'} color={this.props.color} />
                                                 </IconButton>   
                                             </Tooltip>     
-                                            {/*<IconButton color="inherit" onClick={this.downloadItem}>
-                                                <Icon path={mdiDownload} size={'1.2rem'} color={this.props.color} />
-                                            </IconButton>*/}                                     
-                                        </div>            
+                                             </div>            
                                     </Toolbar>
                                 </div>
                             : null

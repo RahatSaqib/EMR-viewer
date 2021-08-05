@@ -78,7 +78,6 @@ class MeasureItem extends PureComponent {
         let index = this.props.index
         let pText = ''
         let sText = ''
-        //console.log('item: ', item)
         switch (item.tool) {
             case 'Length':
                 pText = `${item.data.length.toFixed(2)} ${item.data.unit}`
@@ -105,7 +104,6 @@ class MeasureItem extends PureComponent {
                 sText = item.note
                 break          
             case 'FreehandRoi':
-                //console.log('item: ', item.data.area)
                 //if (item.data.area !== undefined) {
                 pText = <div>
                             <div> A: {item.data.area.toFixed(2)} mm² </div>
@@ -188,5 +186,4 @@ const mapStateToProps = (state) => {
     }
 }
 
-//export default connect(mapStateToProps, )(MeasureItem)
 export default connect(mapStateToProps)(withStyles(styles)(MeasureItem))

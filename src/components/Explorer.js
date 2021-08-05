@@ -139,8 +139,6 @@ class Explorer extends PureComponent {
     }
 
     componentDidMount() {
-        //console.log('Explorer - componentDidMount: ')
-
         const patientIndex = this.props.explorerActivePatientIndex
         const studyIndex = this.props.explorerActiveStudyIndex
         const seriesIndex = this.props.explorerActiveSeriesIndex
@@ -185,7 +183,6 @@ class Explorer extends PureComponent {
     }
 
     componentDidUpdate() {
-        //console.log('Explorer - componentDidUpdate: ', this.state.series)
         for(let i=0; i < this.state.series.length; i++) {
             this.dicomViewersRefs[i].runTool('setfiles', this.seriesList.get(this.state.series[i]))
             this.dicomViewersRefs[i].runTool('openimage', 0)
@@ -193,8 +190,6 @@ class Explorer extends PureComponent {
     }
 
     handlePatientChange = (event, value) => {
-        //console.log('handlePatientChange: ', value)
-
         this.patientName = event.target.value
         const patientIndex = value.key
 
@@ -225,8 +220,6 @@ class Explorer extends PureComponent {
     }
 
     handleStudyChange = (event, value) => {
-        //console.log('handleStudyChange, event: ', event)
-
         const studyIndex = value.key
 
         this.studyList = groupBy(this.filesListForPatient, a => a.study.studyDateTime)
@@ -257,7 +250,6 @@ class Explorer extends PureComponent {
     }
 
     previewStackClick = (index) => {
-        //console.log('previewStackClick: ', index)
         //if (index === this.state.seriesActiveIndex) return
         this.props.setExplorerActiveSeriesIndex(index) 
         this.setState({seriesActiveIndex: index}, () => {

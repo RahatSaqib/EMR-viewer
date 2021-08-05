@@ -75,7 +75,6 @@ class Dicomdir extends PureComponent {
           series.unshift({id: obj.id, key: obj.key, number: obj.number, value: obj.value, expanded: obj.expanded, children: images})
           images = []
         } else if (obj.key === 'study') {
-          //console.log('study obj: ', obj)
           study.unshift({id: obj.id, key: obj.key, value: obj.value, expanded: obj.expanded, children: series})
           series = []
         } else if (obj.key === 'patient') {
@@ -87,29 +86,23 @@ class Dicomdir extends PureComponent {
     }
 
     buildOutput = (dataset) => {
-      //console.log('dataset: ', dataset)
       let data = dataset.elements.x00041220.items
       let output = []
       if (data) {
           data.forEach((e, index) => {
             const id = index.toString()
             if (e.dataSet.string('x00041430') === 'PATIENT') {
-                //console.log("Patient Name - "+e.dataSet.string('x00100010'))
                 output.push({id: id, key: 'patient', value: e.dataSet.string('x00100010'), expanded: true})
             } else if (e.dataSet.string('x00041430') === 'STUDY') {
-                //console.log("Study - "+e.dataSet.string('x00081030'))
                 const value = `${dicomDateToLocale(e.dataSet.string('x00080020'))} - ${dicomTimeToStr(e.dataSet.string('x00080030'))}`
                 output.push({id: id, key: 'study', value: value, expanded: true})
             } else if (e.dataSet.string('x00041430') === 'SERIES') {
-                //console.log("Series number - "+e.dataSet.string('x00200011'))
                 output.push({id: id, key: 'series', number: e.dataSet.string('x00200011'), value: e.dataSet.string('x00080060'), expanded: true})
             } else if (e.dataSet.string('x00041430') === 'IMAGE') {
-                //console.log("Image - "+e.dataSet.string('x00041500'))
                 output.push({id: id, key: 'image', path: e.dataSet.string('x00041500').replace(/\\/g, '/'), value: e.dataSet.string('x00041500').split('\\').pop(), expanded: true})
             }              
           })
       }
-      //console.log('output: ', output)
       return output
     }
 
@@ -118,7 +111,6 @@ class Dicomdir extends PureComponent {
         reader.onload = (file) => {
           let arrayBuffer = reader.result
           let byteArray = new Uint8Array(arrayBuffer)
-          // Invoke the paresDicom function and get back a DataSet object with the contents
           let dataset = null
           let output = []
           try {
@@ -174,7 +166,7 @@ class Dicomdir extends PureComponent {
     }
 
     studyText = (study) => {
-      //console.log('study: ', study)
+     
       return study.value
     }
 

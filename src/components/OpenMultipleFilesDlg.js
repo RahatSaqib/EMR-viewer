@@ -42,8 +42,6 @@ class OpenMultipleFilesDlg extends PureComponent {
   }  
 
   componentDidMount() {
-    //console.log('OpenMultipleFilesDlg - componentDidMount: ', this.props.files)
-
     this.items = []
     this.count = 0
     this.step = 0
@@ -53,8 +51,6 @@ class OpenMultipleFilesDlg extends PureComponent {
     this.step = files.length / 50
     this.nextProgress = this.step
     this.t0 = performance.now()
-
-    //console.log('OpenMultipleFilesDlg - cachedImages: ', cornerstone.imageCache.cachedImages)
 
     //cornerstoneWADOImageLoader.wadouri.fileManager.purge()
     //cornerstone.imageCache.purgeCache()
@@ -68,8 +64,6 @@ class OpenMultipleFilesDlg extends PureComponent {
       else // it's fs item
         imageIds.push(cornerstoneWADOImageLoader.wadouri.fileManager.addBuffer(file.data))
     }
-    
-    //console.log('OpenMultipleFilesDlg - files: ', files)
 
     for (let i=0; i < files.length; i++) {
       const file = files[i]
@@ -80,10 +74,7 @@ class OpenMultipleFilesDlg extends PureComponent {
         return
       }
       
-      //console.log('imageId', imageIds[i])
-      
       cornerstone.loadImage(imageIds[i]).then((image) => {
-        //console.log('image', image)
         const patientName = getDicomPatientName(image)
 
         const studyId = getDicomStudyId(image)
@@ -194,7 +185,6 @@ class OpenMultipleFilesDlg extends PureComponent {
   }
 
   close = () => {
-    //console.log('this.slicesDistance: ', this.slicesDistance)
     this.props.onClose()
   }
 
@@ -227,7 +217,6 @@ class OpenMultipleFilesDlg extends PureComponent {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-      //setAllFilesStore: (files) => dispatch(allFilesStore(files)),
       setFilesStore: (files) => dispatch(filesStore(files)),
   }
 }

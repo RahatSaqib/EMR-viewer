@@ -51,10 +51,6 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-/*const Transition = React.forwardRef(function Transition(props, ref) {
-  return <Slide direction="right" ref={ref} {...props} />;
-})*/
-
 const Settings = ({ onClose }) => {
   
   let saveAs = getSettingsSaveAs()
@@ -64,8 +60,6 @@ const Settings = ({ onClose }) => {
   let fsView = getSettingsFsView()
   let dicomdirView = getSettingsDicomdirView()
   let mprInterpolation = getSettingsMprInterpolation()
-
-  //const isIndexedDB = false // 'indexedDB' in window
   
   const handleChangeSaveAs = event => {
     setState({ ...state, 'saveAs': event.target.value })

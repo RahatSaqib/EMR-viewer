@@ -17,7 +17,6 @@ import * as cornerstoneWebImageLoader from "cornerstone-web-image-loader"
 import * as cornerstoneWADOImageLoader from "cornerstone-wado-image-loader"
 import * as dicomParser from 'dicom-parser'
 import * as blobUtil from 'blob-util'
-//import * as math from 'mathjs'
 import {uids} from '../constants/uids'
 import { SETTINGS_SAVEAS } from '../constants/settings'
 import OpenUrlDlg from './OpenUrlDlg'
@@ -26,10 +25,8 @@ import { isMobile } from 'react-device-detect'
 import { import as csTools } from 'cornerstone-tools'
 import db from '../db/db'
 import fs from '../fs/fs'
-//import { EPSILON } from '../LinearAlgebra/constants'
 import Matrix from '../LinearAlgebra/Matrix'
 import Point from '../LinearAlgebra/Point'
-//import Vector from '../LinearAlgebra/Vector'
 import Line from '../LinearAlgebra/Line'
 import DicomGeometry from '../DicomGeometry/DicomGeometry'
 
@@ -116,7 +113,6 @@ class DicomViewer extends React.Component {
     }
 
     componentDidMount() {
-      //console.log('dicomviewer - componentDidMount: ')
       this.props.runTool(this)
       this.props.changeTool(this)
       cornerstone.events.addEventListener('cornerstoneimageloaded', this.onImageLoaded)
@@ -135,7 +131,6 @@ class DicomViewer extends React.Component {
     }
 
     componentDidUpdate(previousProps) {
-      //console.log('dicomviewer - componentDidUpdate: ')
       const isOpen = this.props.isOpen[this.props.index]
       if (this.props.layout !== previousProps.layout && isOpen) {
         cornerstone.resize(this.dicomImage)
@@ -174,7 +169,6 @@ class DicomViewer extends React.Component {
     }
 
     measurementRemove = (index) => {
-      //console.log('this.measurements: ', this.measurements)
       this.measurements.splice(index, 1)
     }    
 
@@ -210,15 +204,11 @@ class DicomViewer extends React.Component {
     }
    
     onImageLoaded = (e) => {
-      //console.log('cornerstoneimageloaded: ')
       this.props.onLoadedImage()
     }
 
     // Listen for changes to the viewport so we can update the text overlays in the corner
     onImageRendered = (e) => {
-      //console.log('cornerstoneimagerendered: ', e.target)
-
-      //const viewport = cornerstone.getViewport(this.dicomImage)
       const viewport = cornerstone.getViewport(e.target)
       this.zoom = Math.round(viewport.scale.toFixed(2)*100)
 
@@ -318,12 +308,10 @@ class DicomViewer extends React.Component {
     }
 
     onMeasurementModified = (e) => {
-      //console.log('cornerstonetoolsmeasurementmodified: ', e.detail.measurementData)
       
     }
 
     onMeasurementAdded = (e) => {
-      //console.log('cornerstonetoolsmeasurementadded: ', e.detail.measurementData)
       if (this.props.tool !== "Angle") return
       const measure = {
         tool: this.props.tool,
@@ -335,7 +323,6 @@ class DicomViewer extends React.Component {
     }
 
     onMeasurementCompleted = (e) => {
-      //console.log('cornerstonetoolsmeasurementcompleted: ', e.detail.measurementData)
       const measure = {
         tool: this.props.tool,
         note: '',
@@ -366,7 +353,6 @@ class DicomViewer extends React.Component {
     }
 
     displayImageFromFiles = (index) => {
-      //console.log('displayImageFromFiles: ', index)
 
       const files = this.files === null ? this.props.files : this.files
 
@@ -414,7 +400,6 @@ class DicomViewer extends React.Component {
      
       // Load the possible measurements from DB and save in the store 
       db.measurement.where('sopinstanceuid').equals(this.sopInstanceUid).each(measure => {
-        //console.log('load measure from db: ', measure)
         this.measurementSave(measure)
         cornerstoneTools.addToolState(element, measure.tool, measure.data)
         this.runTool(measure.tool)
@@ -431,7 +416,6 @@ class DicomViewer extends React.Component {
     }
 
     loadImageFromCanvas = (canvas) => {
-      //console.log('loadImageFromCanvas, dcmViewer: ', this.props.index)
 
       const element = this.dicomImage
       element.addEventListener("cornerstonenewimage", this.onNewImage)
@@ -461,7 +445,6 @@ class DicomViewer extends React.Component {
     }
 
     loadImageFromCustomObject = (columns, rows, pixelData) => {
-      //console.log('loadImageFromCustomObject: ')
 
       const element = this.dicomImage
       element.addEventListener("cornerstonenewimage", this.onNewImage)
@@ -481,13 +464,10 @@ class DicomViewer extends React.Component {
       const imageId = cornerstoneFileImageLoader.fileManager.addCustom(customObj)
 
       cornerstone.loadImage(imageId).then(image => {
-        //console.log('loadImageFromCustomObject, image: ', image)
         this.image = image
         this.isDicom = true
 
         cornerstone.displayImage(element, image)
-
-        //this.enableTool()
 
         this.props.setIsOpenStore({index: this.props.index, value: true})
       }, (e) => {
@@ -497,9 +477,6 @@ class DicomViewer extends React.Component {
     }
 
     loadImage = (localfile, url=undefined, fsItem=undefined) => {
-      //console.log('loadImage, localfile: ', localfile)
-      //console.log('loadImage, fsItem: ', fsItem)
-      //console.log('loadImage, url: ', url)
 
       if (localfile === undefined && url === undefined && fsItem === undefined) return
       
@@ -524,20 +501,12 @@ class DicomViewer extends React.Component {
       cornerstone.enable(element)
 
       if (localfile === undefined && isUrlImage(url)) { // check if it's a simple image [jpeg or png] from url
-        //console.log('image: ', file)
         cornerstone.loadImage(url).then(image => {
-          //console.log('loadImage, image from url: ', image)
-
           this.hideOpenUrlDlg()
-
           this.image = image
-
           this.isDicom = false
-
-          cornerstone.displayImage(element, image)
-          
+          cornerstone.displayImage(element, image)        
           this.enableTool()
-
           this.props.setActiveDcm(this) // {image: this.image, element: this.dicomImage, isDicom: this.isDicom}
           this.props.isOpenStore(true)
 
@@ -564,7 +533,6 @@ class DicomViewer extends React.Component {
           this.enableTool()
 
           this.props.setActiveDcm(this) // {image: this.image, element: this.dicomImage, isDicom: this.isDicom}
-          //this.props.isOpenStore(true)
           this.props.setIsOpenStore({index: this.props.index, value: true})
 
         }, (e) => {
@@ -585,14 +553,8 @@ class DicomViewer extends React.Component {
         } else { // it's a web dicom image
           imageId = "wadouri:"+url
         }
-  
-        //console.log('loadImage, imageId: ', imageId)
 
         cornerstone.loadAndCacheImage(imageId).then(image => {
-          //console.log('loadImage, image: ', image)
-          //let pixelDataElement = image.data.elements.x7fe00010
-          //console.log('loadImage, pixelDataElement: ', pixelDataElement)
-          //console.log('loadImage, getPixelData: ', image.getPixelData())
           
           this.hideOpenUrlDlg()
 
@@ -628,15 +590,12 @@ class DicomViewer extends React.Component {
   
           // Load the possible measurements from DB and save in the store 
           db.measurement.where('sopinstanceuid').equals(this.sopInstanceUid).each(measure => {
-            //console.log('load measure from db: ', measure)
-            //this.props.measurementStore(measure)
             this.measurementSave(measure)
             cornerstoneTools.addToolState(element, measure.tool, measure.data)
             this.runTool(measure.tool)
             cornerstone.updateImage(element)
             cornerstoneTools.setToolEnabled(measure.tool)
           }).then(() => {
-            //console.log('this.measurements: ', this.measurements)
             this.props.setActiveMeasurements(this.measurements)
             this.props.setActiveDcm(this) // {name: this.filename, size: size, image: this.image, element: this.dicomImage, isDicom: this.isDicom}
             this.props.setIsOpenStore({index: this.props.index, value: true})            
@@ -644,8 +603,7 @@ class DicomViewer extends React.Component {
 
         }, (e) => {
           console.log('error', e)   
-          this.hideOpenUrlDlg()      
-          //console.log('toString: ', e.error.toString())
+          this.hideOpenUrlDlg()     
           const error = e.error.toString()
           if (error === '[object XMLHttpRequest]') {
             this.setState({errorOnCors: true})
@@ -707,7 +665,6 @@ class DicomViewer extends React.Component {
     }
   
     runTool = (toolName, opt) => {
-      //console.log(`runTool: ${toolName}, ${opt}`)
       if (this.state.inPlay) {
         this.runCinePlayer('pause')
       }
@@ -874,7 +831,6 @@ class DicomViewer extends React.Component {
           break
         }
         case 'removetool': {
-          //console.log('removetool index: ', opt)
           const element = this.dicomImage
           cornerstoneTools.removeToolState(element, this.measurements[opt].tool, this.measurements[opt].data)
           cornerstone.updateImage(element)
@@ -932,7 +888,6 @@ class DicomViewer extends React.Component {
     }
 
     changeTool = (toolName, value) => {
-      //console.log('change tool, value: ', toolName, value)
 
       switch (toolName) {
         case 'Wwwc':
@@ -1067,7 +1022,7 @@ class DicomViewer extends React.Component {
       cornerstone.setViewport(element, viewport)
     }
 
-    // -------------------------------------------------------------------------------------------- MPR
+    // MPR
     //#region MPR
 
     mprPlanePosition = () => {
@@ -1103,9 +1058,7 @@ class DicomViewer extends React.Component {
     }
 
     mprRenderYZPlane = (filename, origin, x, mprData) => {
-      if (this.volume === null) return
-      
-      //console.log('mprRenderYZPlane, mprData: ', mprData) 
+      if (this.volume === null) return 
 
       this.mprData = mprData
 
@@ -1153,7 +1106,6 @@ class DicomViewer extends React.Component {
     }
 
     mprBuildYZPlane = (x) => {
-      //console.log(`mprBuildYZPlane, ySize: ${this.ySize}, zSize: ${this.zSize} `)
       let plane = new Int16Array(this.ySize * this.zSize)
       for (var y = 0; y < this.ySize; y++) 
         for (var z = 0; z < this.zSize; z++) 
@@ -1165,8 +1117,6 @@ class DicomViewer extends React.Component {
       if (this.volume === null) return
 
       this.mprData = mprData
-
-      //console.log('mprRenderXZPlane, mprData: ', mprData) 
 
       const files = this.files === null ? this.props.files : this.files
       
@@ -1311,25 +1261,15 @@ class DicomViewer extends React.Component {
       ctx.stroke()
     }
 
-    //#endregion
 
-    // -------------------------------------------------------------------------------------------- REFERENCE LINES
-    //#region REFERENCE LINES
-
-    // see https://stackoverflow.com/questions/10241062/how-to-draw-scout-reference-lines-in-dicom
-    //     http://www.dclunie.com/dicom3tools/workinprogress/dcpost.cc
-    // 
     referenceLinesBuild = (srcImage) => {
-      //console.log('referenceLinesBuild - srcImage: ', srcImage)
       
       this.referenceLines.dst = new DicomGeometry(this.image)
-      //console.log('this.referenceLines.dst: ', this.referenceLines.dst)
       this.referenceLines.src = new DicomGeometry(srcImage)
-      //console.log('this.referenceLines.src: ', this.referenceLines.src)
 
       this.referenceLines.isReferenceLine = this.referenceLines.dst.orientation !== undefined &&
-                                            this.referenceLines.src.orientation !== undefined && 
-                                            this.referenceLines.dst.orientation !== this.referenceLines.src.orientation
+      this.referenceLines.src.orientation !== undefined && 
+      this.referenceLines.dst.orientation !== this.referenceLines.src.orientation
 
       this.referenceLines.isScoutDraw = true
 
@@ -1430,11 +1370,9 @@ class DicomViewer extends React.Component {
           pos[i] = new Point(Math.round(m.get(0,0)), Math.round(m.get(1,0)), Math.round(m.get(2,0))) 
 
           // DICOM coordinates are center of pixel 1\1
-          pixel[i] = new Point(Math.trunc(pos[i].x / dst.spacingY + 0.5),
-                               Math.trunc(pos[i].y / dst.spacingX + 0.5))
+          pixel[i] = new Point(Math.trunc(pos[i].x / dst.spacingY + 0.5), Math.trunc(pos[i].y / dst.spacingX + 0.5))
       }         
 
-      //console.log('referenceLinesBuildPlane: ', pixel)
       return pixel
     }
 
@@ -1489,7 +1427,6 @@ class DicomViewer extends React.Component {
     }
 
     onImageClick = () => {
-      //console.log('onImageClick: ')
     }
 
     isLocalizer = () => {
@@ -1498,10 +1435,8 @@ class DicomViewer extends React.Component {
 
     findFirstSliceWithIppValue = (ippValue, ippPos) => {
       const increasing = this.files[0].sliceDistance - this.files[this.files.length-1].sliceDistance < 0
-      //console.log('DicomViewer - findFirstSliceWithIppValue, ippValue: ', ippValue)
       for(let i=0; i < this.files.length; i++) {
         const ipp = getDicomIpp(this.files[i].image, ippPos)
-        //console.log(`DicomViewer - findFirstSliceWithIppValue, i: ${i}, ipp: ${ipp}`)
         if (increasing) {
           if (ipp >= ippValue) return i          
         } else {
@@ -1556,7 +1491,7 @@ class DicomViewer extends React.Component {
             </DialogActions>
           </Dialog>
 
-          <Dialog
+          {/* <Dialog
             open={this.state.errorOnCors}
             onClose={this.onErrorCorsClose}
             aria-labelledby="alert-dialog-title"
@@ -1584,7 +1519,7 @@ class DicomViewer extends React.Component {
                 Ok
               </Button>
             </DialogActions>
-          </Dialog>
+          </Dialog> */}
 
           <div
             style={{

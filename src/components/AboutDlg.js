@@ -13,7 +13,7 @@ import packageJson from '../../package.json'
 
 const AboutDlg = ({ onClose }) => {
 
-    const urlRepository = "https://github.com/webnamics/u-dicom-viewer/"
+    const urlRepository = "https://bdemr.com/"
 
     const linkRepository = (
         <Typography variant='body2'>
@@ -22,7 +22,7 @@ const AboutDlg = ({ onClose }) => {
                 target='_blank'
                 style={{ color: '#999999' }}
             >
-                https://github.com/webnamics/u-dicom-viewer
+                https://bdemr.com/
             </Link>
         </Typography>
     )
@@ -38,7 +38,7 @@ const AboutDlg = ({ onClose }) => {
         <Dialog onClose={onClose} open={true}>
             <DialogTitle onClose={onClose} disableTypography={true}>
                 <Typography variant='h6'>
-                    About <strong>U</strong> <strong>D</strong>icom <strong>V</strong>iewer
+                    About <strong>D</strong>icom <strong>V</strong>iewer
                 </Typography>
             </DialogTitle>
             <DialogContent>

@@ -18,15 +18,6 @@ const styleButton = {
     right: "0px",
     top: "12px",
 }
-
-// To test:
-// http://medistim.com/wp-content/uploads/2016/07/bmode.dcm
-// https://raw.githubusercontent.com/cornerstonejs/cornerstoneWADOImageLoader/master/testImages/CT2_J2KR
-// http://www.lodevelop.it/download/bmode.dcm
-// http://www.lodevelop.it/download/CTImage.jpeg
-// http://www.lodevelop.it/download/CTImage.png
-// http://www.lodevelop.it/download/radiologic.zip
-
 class OpenUrl extends PureComponent {
     constructor(props) {
         super(props)

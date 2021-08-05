@@ -17,7 +17,7 @@ import {
 } from './constants/settings'
 
 
-// ---------------------------------------------------------------------------------------------- DICOM
+//  DICOM
 //#region DICOM
 
 export function getDicomPatientName(image) {
@@ -219,20 +219,17 @@ export function getDicomImageXOnRows(image) {
     else return false
 }
 
-// see https://stackoverflow.com/questions/37730772/get-distance-between-slices-in-dicom
-//
+
 export function getDicomSliceDistance(image) {
     try {
         const ipp = image.data.string('x00200032').split('\\') // Image Position Patient
-        //console.log("imagePosition: ", ipp)
+
         let topLeftCorner = new Array(3).fill(0)
         topLeftCorner[0] = parseFloat(ipp[0]) // X pos of frame (Top left) in real space
         topLeftCorner[1] = parseFloat(ipp[1]) // Y pos of frame (Top left) in real space
         topLeftCorner[2] = parseFloat(ipp[2]) // Z pos of frame (Top left) in real space
-        //console.log("topLeftCorner: ", topLeftCorner)
 
         const iop = image.data.string('x00200037').split('\\') // Image Orientation Patient
-        //console.log("values: ", iop)
         let v = new Array(3).fill(0).map(() => new Array(3).fill(0))
 
         v[0][0] = parseFloat(iop[0]) // the x direction cosines of the first row X
@@ -307,8 +304,7 @@ export function capitalize(str) {
         return str.charAt(0).toUpperCase() + str.slice(1)
 }
 
-// To see the console output set the key 'debug-u-dicom-viewer' in 
-// 'Storage->Local Storage' panel of your browser Develop Tool
+
 export function log() {
     let log = localStorage.getItem('debug-u-dicom-viewer')
     if (log === null) {
@@ -390,7 +386,7 @@ export function formatBytes(bytes, decimals = 2) {
 }
 
 
-// ---------------------------------------------------------------------------------------------- SETTINGS 
+//  SETTINGS 
 //#region  SETTINGS
 
 export function getSettingsSaveAs() {
@@ -499,10 +495,7 @@ export function setSettingsMprInterpolation(value) {
 
 //#endregion
 
-/**
- * Converts a value to a string appropriate for entry into a CSV table.  E.g., a string value will be surrounded by quotes.
- * @param {string|number|object} theValue
- */
+
 function toCsvValue(theValue) {
     let t = typeof theValue,
         output
@@ -520,12 +513,7 @@ function toCsvValue(theValue) {
     return output
 }
 
-/**
- * Converts an array of objects (with identical schemas) into a CSV table.
- * @param {Array} objArray An array of objects.  Each object in the array must have the same property list.
- * @param {string} cDelimiter The column delimiter.  Defaults to a comma (,) if omitted.
- * @return {string} The CSV equivalent of objArray.
- */
+
 export function toCsv(objArray, cDelimiter) {
     var i,
         l,

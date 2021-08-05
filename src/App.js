@@ -43,6 +43,7 @@ import Typography from '@material-ui/core/Typography'
 import 'react-perfect-scrollbar/dist/css/styles.css'
 import PerfectScrollbar from 'react-perfect-scrollbar'
 
+
 import { 
   isMobile, 
   isTablet,
@@ -120,7 +121,7 @@ import {
   mdiTrashCanOutline, 
   mdiVectorLink,
   mdiVideo,
-  mdiWeb,
+  // mdiWeb,
   mdiPlay,
   mdiPause,
   mdiSkipBackward,
@@ -131,14 +132,13 @@ import {
 
 import './App.css'
 
-//import * as cornerstoneTools from "cornerstone-tools"
-
 log()
 
 //localStorage.setItem("debug", "cornerstoneTools")
 
 const drawerWidth = 240
 const iconColor = '#FFFFFF'
+const iconColor1 = '#1aa3ff'
 const activeColor = 'rgba(0, 255, 0, 1.0)'
 
 const styles = theme => ({
@@ -163,9 +163,11 @@ const styles = theme => ({
   title: {
     flexGrow: 1,
   },
+  
 
   appBar: {
     position: 'relative',
+    BorderRadius: '0px 0px 10px 10px',
     zIndex: theme.zIndex.drawer + 1,
     transition: theme.transitions.create(['width', 'margin'], {
       easing: theme.transitions.easing.sharp,
@@ -267,6 +269,7 @@ class App extends PureComponent {
     this.activeDcmViewersNum = 0
 
     this.referenceLines = {}
+    
   }
 
   state = {
@@ -311,11 +314,6 @@ class App extends PureComponent {
     visibleSeriesLink: true,
   }
 
-  /*componentDidUpdate() {
-    console.log('App - componentDidUpdate: ', this.props.explorerActiveSeriesIndex)
-
-  }*/
-
   setDcmViewer = (index) => {
     return (
       <DicomViewer 
@@ -335,13 +333,10 @@ class App extends PureComponent {
   }
 
   onLoadedImage = () => {
-    //console.log('App - onLoadedImage: ')
 
   }
 
   onRenderedImage = (index) => {
-    //console.log('App - onRenderedImage: ', index)
-
     if (this.referenceLines.crossViewer !== undefined && 
         this.state.visibleReferenceLines 
         && this.isSliceChange 
@@ -369,7 +364,6 @@ class App extends PureComponent {
   }
 
   handleOpenLocalFs = (filesSelected) => {
-    //console.log('handleOpenLocalFs: ', filesSelected)
     if (filesSelected.length > 1) {
       this.files = filesSelected
       this.changeLayout(1, 1)
@@ -404,8 +398,6 @@ class App extends PureComponent {
   }
 
   handleOpenImage = (index) => {
-    //console.log('handleOpenImage: ', index)
-//    console.log('handleOpenImage - this.dicomViewersRefs: ', this.dicomViewersRefs)
 
     this.dicomViewersRefs[this.props.activeDcmIndex].sliceIndex = index // this.state.sliceIndex
 
@@ -414,8 +406,7 @@ class App extends PureComponent {
     const visibleMprCoronal = this.state.visibleMprCoronal
     const visibleMprAxial = this.state.visibleMprAxial
     const plane = this.mprPlanePosition() // plane of source
-    //console.log('handleOpenImage, plane: ', plane)
-    //console.log('handleOpenImage, visibleMprOrthogonal: ', visibleMprOrthogonal)
+
     
     if (visibleMprOrthogonal) {
       if (this.props.activeDcmIndex === 0) {
@@ -425,25 +416,13 @@ class App extends PureComponent {
           this.dicomViewersRefs[2].mprReferenceLines(index)
         }
       } else if (this.props.activeDcmIndex === 1) {
-        /*if (plane === 'sagittal') { // then open axial plane in second view
-          this.dicomViewersRefs[1].mprRenderXZPlane(this.dicomViewersRefs[0].filename, plane, index, this.mprData)
-        } else if (plane === 'axial') { // then open coronal plane in second view
-          this.dicomViewersRefs[1].mprRenderXZPlane(this.dicomViewersRefs[0].filename, plane, index, this.mprData)
-        } else { // plane is coronal, then open axial in second view
-          this.dicomViewersRefs[1].mprRenderXZPlane(this.dicomViewersRefs[0].filename, plane, index, this.mprData)
-        }*/
+
         this.dicomViewersRefs[1].mprRenderXZPlane(this.dicomViewersRefs[0].filename, plane, index, this.mprData)
         this.dicomViewersRefs[2].mprReferenceLines2(index) 
         this.dicomViewersRefs[0].mprReferenceLines3(index, this.mprData)
 
       } else if (this.props.activeDcmIndex === 2) {
-        /*if (plane === 'sagittal') { // then open axial plane in third view
-          this.dicomViewersRefs[2].mprRenderYZPlane(this.dicomViewersRefs[0].filename, plane, index, this.mprData)
-        } else if (plane === 'axial') { // then open coronal plane in third view
-          this.dicomViewersRefs[2].mprRenderYZPlane(this.dicomViewersRefs[0].filename, plane, index, this.mprData)
-        } else { // plane is coronal, then open axial in third view
-          this.dicomViewersRefs[2].mprRenderYZPlane(this.dicomViewersRefs[0].filename, plane, index, this.mprData)
-        }*/
+
         this.dicomViewersRefs[2].mprRenderYZPlane(this.dicomViewersRefs[0].filename, plane, index, this.mprData)
         this.dicomViewersRefs[1].mprReferenceLines2(index)   
         this.dicomViewersRefs[0].mprReferenceLines3(index, this.mprData)  
@@ -474,11 +453,9 @@ class App extends PureComponent {
     }
 
     this.activeDcmViewersNum = this.getActiveDcmViewers()
-    //console.log('handleOpenImage - this.dicomViewersActive 1: ', this.dicomViewersActive)
     if (this.activeDcmViewersNum > 0) {
       this.getActiveDcmViewersSameStudy()
       this.getActiveDcmViewersSamePlane()
-      //console.log('handleOpenImage - this.dicomViewersActive 2: ', this.dicomViewersActive)
       if (this.state.visibleReferenceLines && this.dicomViewersActive.length > 1) {        
         this.referenceLinesShow() 
       }
@@ -858,7 +835,6 @@ class App extends PureComponent {
   }
 
   changeLayout = (row, col) => {
-    //console.log(`changeLayout, row: ${row} - col: ${col}`)
     // if reduce the grid clear the unused views
     if (row < this.props.layout[0] || col < this.props.layout[1]) {
       for(let i=0; i < 4; i++) {
@@ -931,7 +907,6 @@ class App extends PureComponent {
   layoutGridClick = (index) => {
     if (isMobile && index === this.props.activeDcmIndex) return
 
-    //console.log('layoutGridClick: ', index)
 
     //this.mprPlanePosition(true, index)
 
@@ -946,13 +921,11 @@ class App extends PureComponent {
     }  
 
     const dcmViewer = this.getDcmViewerRef(index)
-    //console.log('layoutGridClick - dcmViewer: ', dcmViewer)
     if (dcmViewer.image === null) return // click on empty frame
 
     this.props.setActiveMeasurements(dcmViewer.measurements)
     this.props.setActiveDcm(dcmViewer) // {image: dcmViewer.image, element: dcmViewer.dicomImage, isDicom: dcmViewer.isDicom}
     this.props.setExplorerActiveSeriesIndex(dcmViewer.explorerIndex) 
-    //console.log('layoutGridClick - dcmViewer.explorerIndex: ', dcmViewer.explorerIndex) 
 
     if (this.state.visibleReferenceLines && this.dicomViewersActive.length > 1) {
       if (this.referenceLines.scoutViewer !== undefined) this.referenceLines.scoutViewer.updateImage()
@@ -1025,7 +998,7 @@ class App extends PureComponent {
       else 
         return (
           <Typography variant="overline" className={classes.title}>
-            <strong>U</strong> <strong>D</strong>icom <strong>V</strong>iewer
+            <strong>AMAAR</strong> <strong>V</strong>iewer
           </Typography>          
         )
     } else {
@@ -1052,34 +1025,29 @@ class App extends PureComponent {
       } else
         return (
           <Typography variant="overline" className={classes.title}>
-            <strong>U</strong> <strong>D</strong>icom <strong>V</strong>iewer
+           <strong>AMAR</strong> <strong>V</strong>iewer
           </Typography>
         )
     }
   }
 
-  // ---------------------------------------------------------------------------------------------- LINK SERIES
+  //  LINK SERIES
   // #region LINK SERIES
 
   seriesLinkToggle = () => {
     this.setState({ visibleSeriesLink: !this.state.visibleSeriesLink })
   }
 
-  // ---------------------------------------------------------------------------------------------- REFERENCE LINES
+  //  REFERENCE LINES
   // #region REFERENCE LINES
 
   referenceLinesToggle = () => {
-    //console.log('referenceLinesToggle: ')
-    //console.log('referenceLinesToggle, mprMode: ', this.state.mprMode)
+
     //if (this.state.mprMode) return
     const visible = !this.state.visibleReferenceLines
     this.setState({ visibleReferenceLines: visible })
     if (visible && this.dicomViewersActive.length > 1) {
-      //console.log('this.props.activeDcmIndex: ', this.props.activeDcmIndex)
-      /*this.referenceLines.crossViewer = this.getDcmViewerRef(this.props.activeDcmIndex) // this is cross-sectional image
-      const crossMprPlane = this.referenceLines.crossViewer.mprPlane
-      this.openViewers = this.dicomViewersActive.filter(v => v.layoutIndex !== this.props.activeDcmIndex && crossMprPlane !== v.mprPlane)
-      this.referenceLinesDraw()*/
+
       this.referenceLinesShow()
     } else {
       this.referenceLinesHide()
@@ -1087,13 +1055,11 @@ class App extends PureComponent {
   }
 
   referenceLinesShow = () => {
-    //console.log('referenceLinesShow, this.props.activeDcmIndex: ', this.props.activeDcmIndex)
     if (this.state.mprMode || !this.state.visibleReferenceLines || this.dicomViewersActive.length < 2) return
     this.referenceLines.crossViewer = this.getDcmViewerRef(this.props.activeDcmIndex) // this is cross-sectional image
     const crossMprPlane = this.referenceLines.crossViewer.mprPlane
     this.openViewers = this.dicomViewersActive.filter(v => v.layoutIndex !== this.props.activeDcmIndex && crossMprPlane !== v.mprPlane)    
     //this.referenceLinesDraw()
-    //console.log('referenceLinesShow, this.referenceLines.crossViewer: ', this.referenceLines.crossViewer)
     this.referenceLines.crossViewer.updateImage()
     for(let i=0; i < this.openViewers.length; i++) {
       this.openViewers[i].referenceLinesBuild(this.referenceLines.crossViewer.image) // this is scout image
@@ -1106,29 +1072,15 @@ class App extends PureComponent {
       this.openViewers[i].updateImage() // this is scout image
     }
   }
-/*
-  referenceLinesDraw = () => {
-    if (this.state.mprMode) return
-    console.log('referenceLinesDraw: ')
-    console.log('referenceLinesDraw, this.referenceLines.crossViewer: ', this.referenceLines.crossViewer)
-    this.referenceLines.crossViewer.updateImage()
-    for(let i=0; i < this.openViewers.length; i++) {
-      this.openViewers[i].referenceLinesBuild(this.referenceLines.crossViewer.image) // this is scout image
-    }
-  }
-*/
+
   // #endregion 
 
-  // ---------------------------------------------------------------------------------------------- MPR
+  //  MPR
   // #region MPR
 
   mprBuildVolume = () => {
-    //console.log('mprBuildVolume: ', this.state.sliceIndex)
-    //console.log('this.files: ', this.files)
-    //console.log('this.dicomViewersRefs[0].files: ', this.dicomViewersRefs[0].files)
 
-    // "For the specific case of dual-echo MR images select files with same EchoNumber tag of selected image.
-    // see https://groups.google.com/forum/#!topic/comp.protocols.dicom/zh2TzgbjvdE    
+    // "For the specific case of dual-echo MR images select files with same EchoNumber tag of selected image.  
     const echoNumber = getDicomEchoNumber(this.dicomViewersRefs[this.props.activeDcmIndex].image)
 
     if (this.volume.length > 0 && echoNumber === this.echoNumber) return
@@ -1152,14 +1104,9 @@ class App extends PureComponent {
 
     this.volume = []
 
-    // see https://stackoverflow.com/questions/58412358/dicom-multiplanar-image-reconstruction
+
     this.mprData.zDim = Math.round(files.length * spacingBetweenSlice / xPixelSpacing)
 
-    //console.log('this.mprData.zDim: ', this.mprData.zDim)
-    //console.log('spacingBetweenSlice: ', spacingBetweenSlice)
-    //console.log('sliceThickness: ', sliceThickness)
-    //console.log('xPixelSpacing: ', xPixelSpacing)
-    //console.log('getSliceLocation: ', sliceLocation)
 
     // If spacing between slices is less than slice thickness, the images are not optimal for 3D reconstruction.
     // Try an alternative algorithm based on slice distance.
@@ -1174,12 +1121,9 @@ class App extends PureComponent {
           min = files[i].sliceDistance  
       }
       this.mprData.zDim = Math.round(Math.abs(max - min) / xPixelSpacing)
-      //console.log('method2, this.mprData.zDim: ', this.mprData.zDim)
       zDimMethod2 = true
     }
-    //console.log('this.mprData.zDim: ', this.mprData.zDim)
     this.mprData.zStep = Math.round(this.mprData.zDim / files.length)
-    //console.log('this.mprData.zStep: ', this.mprData.zStep)
     
     if (files.length === this.mprData.zDim) { // slices contiguous
       for (let i = 0, len = files.length; i < len; i++) {
@@ -1198,7 +1142,6 @@ class App extends PureComponent {
       for (let i = 0; i < files.length; i++) {
         order.push({iFile: i, instanceNumber: files[i].instanceNumber, sliceDistance: files[i].sliceDistance, sliceLocation: files[i].sliceLocation})
       }
-      //console.log('order 1: ', order) 
 
       if (zDimMethod2) {
         // eliminate eventually duplicates
@@ -1214,11 +1157,9 @@ class App extends PureComponent {
           // return r.sliceDistance - l.sliceDistance
           return l.instanceNumber - r.instanceNumber
         })     
-        //console.log('order - zDimMethod2: ', order)     
 
       } else {
         const reorder = (files[0].sliceDistance < files[1].sliceDistance)
-        //console.log('reorder 1: ', reorder)
         // const reorder = files[sliceIndex].sliceLocation < files[1].sliceLocation
         if (reorder) {
           order.sort((l, r) => {
@@ -1226,11 +1167,9 @@ class App extends PureComponent {
             //return r.sliceLocation - l.sliceLocation
             // return r.instanceNumber - l.instanceNumber
           })    
-          //console.log('order - no zDimMethod2, 1: ', order)
         } else {
           const isOnRows = getDicomImageXOnRows(files[sliceIndex].image)
           const reorder = Math.sign(files[0].sliceDistance) * Math.sign(files[0].sliceLocation) < 0
-          //console.log('reorder 2: ', reorder)
           if (reorder) {        
             order.sort((l, r) => {
               if (isOnRows)
@@ -1238,7 +1177,6 @@ class App extends PureComponent {
               else
                 return r.sliceDistance - l.sliceDistance  
             })    
-            //console.log('order - no zDimMethod2, 2: ', order)
           }
         }
       }
@@ -1248,7 +1186,6 @@ class App extends PureComponent {
         // return l.instanceNumber - r.instanceNumber
       })  
 */
-      //console.log('order 2: ', order)
 
       this.mprData.instanceNumberOrder = files[order[0].iFile].instanceNumber < files[order[1].iFile].instanceNumber ? 1 : -1
       this.mprData.indexMax = files.length
@@ -1260,7 +1197,6 @@ class App extends PureComponent {
       let i = 0
       for (let k = 1; k <= order.length-2; k++) {  
           i = Math.ceil(i+step)
-          //console.log(`i: ${i},  k: ${k},  order[k].iFile: ${order[k].iFile}`)
           this.volume[i] = files[order[k].iFile].image.getPixelData() // order[k-1].iFile
           intervals.push(i)
       }
@@ -1342,7 +1278,6 @@ class App extends PureComponent {
   }
 
   changeToOrthogonalView = () => {  
-    //console.log('changeToOrthogonalView - files: ', this.dicomViewersRefs[0].files)
     
     this.setState({sliceMax: this.dicomViewersRefs[0].files.length})
 
@@ -1380,7 +1315,6 @@ class App extends PureComponent {
   }
 
   changeToSagittalView = () => {
-    //console.log('changeToSagittalView: ')
 
     this.changeLayout(1, 1)
 
@@ -1493,7 +1427,6 @@ class App extends PureComponent {
   }
 
   mprPlanePosition = (force = false, index = this.props.activeDcmIndex) => {
-    //console.log('App - mprPlanePosition: ', index)
     if (this.mprPlane === '' || force) {
       this.mprPlane = this.dicomViewersRefs[index].mprPlanePosition()
       if (!this.state.visibleMprOrthogonal) {
@@ -1610,7 +1543,7 @@ class App extends PureComponent {
 
   // #endregion 
   
-  // ---------------------------------------------------------------------------------------------- FILES/SLICE MANIPULATION
+  //  FILES/SLICE MANIPULATION
   //#region FILES/SLICE MANIPULATION
 
   listOpenFilesFirstFrame = () => {
@@ -1672,11 +1605,10 @@ class App extends PureComponent {
 
   //#endregion
 
-  // ---------------------------------------------------------------------------------------------- EXPLORER
+  // EXPLORER
   //#region EXPLORER
 
   explorerOnSelectSeries = (files, explorerIndex) => {
-    //console.log('explorerOnSelectSeries: ', files)
     let index = this.props.activeDcmIndex
     if (this.state.mprMode) {
       index = 0
@@ -1708,48 +1640,34 @@ class App extends PureComponent {
   //#endregion EXPLORER
 
   getActiveDcmViewers = () => {
-    //console.log('getActiveDcmViewers', this.dicomViewersRefs)
     this.dicomViewersActive = this.dicomViewersRefs.filter(v => v !== undefined && v.image !== null)
-    //console.log('dicomViewersActive: ', this.dicomViewersActive)
     return this.dicomViewersActive.length
   }  
 
   getActiveDcmViewersSameStudy = () => {
-    //console.log('App - this.dicomViewersActiveSameStudy - this.dicomViewersRefs: ', this.dicomViewersRefs)
     const studyId = getDicomStudyId(this.dicomViewersRefs[this.props.activeDcmIndex].image)
     this.dicomViewersActiveSameStudy = this.dicomViewersRefs.filter(v => v !== undefined && getDicomStudyId(v.image) === studyId)
-    //console.log('App - this.dicomViewersActiveSameStudy', this.dicomViewersActiveSameStudy)
     return this.dicomViewersActiveSameStudy.length
   }  
 
   getActiveDcmViewersSamePlane = () => {
     this.dicomViewersActiveSamePlane = []
-    //console.log('App - getActiveDcmViewersSamePlane - this.props.activeDcmIndex: ', this.props.activeDcmIndex)
     const plane = this.dicomViewersRefs[this.props.activeDcmIndex].mprPlane
-    //console.log('App - getActiveDcmViewersSamePlane - plane: ', plane)
     for(let i=0; i < this.dicomViewersActiveSameStudy.length; i++) {
-      //console.log('App - getActiveDcmViewersSamePlane - i: ', i)
-      //console.log('App - getActiveDcmViewersSamePlane - this.dicomViewersActiveSameStudy[i].mprPlane: ', this.dicomViewersActiveSameStudy[i].mprPlane)
       if (this.dicomViewersActiveSameStudy[i].mprPlane === plane && 
           this.dicomViewersActiveSameStudy[i].layoutIndex !== this.props.activeDcmIndex)
         this.dicomViewersActiveSamePlane.push(this.dicomViewersActiveSameStudy[i])
     }
-    //console.log('App - getActiveDcmViewersSamePlane - this.dicomViewersActiveSamePlane: ', this.dicomViewersActiveSamePlane)
   }
 
   syncActiveDcmViewersSamePlane = (direction) => {
     if (!this.state.visibleSeriesLink) return
-    //console.log('App - this.dicomViewersActiveSamePlane: ', this.dicomViewersActiveSamePlane)
     if (this.dicomViewersActiveSamePlane.length > 0) {
       const plane = this.dicomViewersRefs[this.props.activeDcmIndex].mprPlane
       const ippX = getDicomIpp(this.dicomViewersRefs[this.props.activeDcmIndex].image, 0)
       const ippY = getDicomIpp(this.dicomViewersRefs[this.props.activeDcmIndex].image, 1)
       const ippZ = getDicomIpp(this.dicomViewersRefs[this.props.activeDcmIndex].image, 2)
 
-      //console.log('App - syncActiveDcmViewersSamePlane - plane: ', plane)
-      //console.log('App - syncActiveDcmViewersSamePlane - ippX: ', ippX)
-      //console.log('App - syncActiveDcmViewersSamePlane - ippY: ', ippY)
-      //console.log('App - syncActiveDcmViewersSamePlane - ippZ: ', ippZ)
 
       let j = 0
       for(let i=0; i < this.dicomViewersActiveSamePlane.length; i++) {
@@ -1759,7 +1677,6 @@ class App extends PureComponent {
           j = this.dicomViewersActiveSamePlane[i].findFirstSliceWithIppValue(ippY, 1)
         else if (plane === 'axial') 
           j = this.dicomViewersActiveSamePlane[i].findFirstSliceWithIppValue(ippZ, 2)
-        //console.log('App - syncActiveDcmViewersSamePlane - j: ', j)
         if (j >= 0) 
           this.dicomViewersActiveSamePlane[i].runTool('openimage', j)
       }
@@ -1772,7 +1689,6 @@ class App extends PureComponent {
   }
 
   render() {
-    //console.log('App render: ')
 
     const { classes } = this.props
 
@@ -1792,7 +1708,6 @@ class App extends PureComponent {
       else
         this.isMultipleFiles = false
     }
-    //console.log('isMultipleFiles: ', this.isMultipleFiles)
     //const isMultipleView = this.activeDcmViewersNum > 1
 
     const openMenu = this.state.openMenu
@@ -1829,14 +1744,10 @@ class App extends PureComponent {
 
     const sliceMax = this.state.sliceMax
 
-    //console.log('dcmViewer: ', dcmViewer)
-    //console.log('this.mprPlane: ', this.mprPlane)
-    //console.log('mprMenu: ', mprMenu)
-    //console.log('mprMode: ', this.state.mprMode)
-    
+
     return (
       <div>
-        <AppBar className={classes.appBar} position='static' elevation={0}>
+        <AppBar className={classes.appBar} position='static' elevation={0} style={{backgroundImage:'linear-gradient(to right, #0052d4, #65c7f7, #0052d4)',borderRadius: '0px 0px 20px 20px'}}>
           <Toolbar variant="dense">
             <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu" onClick={this.toggleMainMenu}>
               <MenuIcon />
@@ -1844,12 +1755,12 @@ class App extends PureComponent {
             { this.appBarTitle(classes, isOpen, dcmViewer) }
             
             <div className={classes.grow} />
-            { !isOpen && !isDicomdir ? (
+            {/* { !isOpen && !isDicomdir ? (
               <IconButton onClick={this.showAbout}>
                 <Icon path={mdiInformationOutline} size={iconSize} color={iconColor} />
               </IconButton> 
              ) : null
-            }        
+            }         */}
             {/*    
             { iconTool !== null && this.props.tool !== null &&  isOpen ? (
                 <IconButton onClick={this.toolChange}>
@@ -1947,7 +1858,7 @@ class App extends PureComponent {
           style={{position:'relative', zIndex: 1}}
           onClose={this.toggleMainMenu}
         >
-          <div className={classes.toolbar}>
+          <div className={classes.toolbar} style={{backgroundColor:'black',height:'100%',marginTop:'10px' ,color:'#1aa3ff'}}>
           <PerfectScrollbar>   
             <List dense={true}>
               <ListItem button onClick={() => this.showAppBar()}>
@@ -1955,34 +1866,34 @@ class App extends PureComponent {
                 <ListItemText primary='Tool Bar' />
               </ListItem>    
               <ListItem button onClick={() => this.toggleFileManager()}>
-                <ListItemIcon><Icon path={mdiFileCabinet} size={iconSize} color={iconColor} /></ListItemIcon>
+                <ListItemIcon><Icon path={mdiFileCabinet} size={iconSize} color={iconColor1} /></ListItemIcon>
                 <ListItemText classes={primaryClass} primary='File Manager' />
               </ListItem>      
               
               <ListItem button onClick={() => this.toggleOpenMenu()}>
-                <ListItemIcon><Icon path={mdiFolderMultiple} size={iconSize} color={iconColor} /></ListItemIcon>
+                <ListItemIcon><Icon path={mdiFolderMultiple} size={iconSize} color={iconColor1} /></ListItemIcon>
                 <ListItemText classes={primaryClass} primary='Open ...' />
                 {openMenu ? <ExpandLess /> : <ExpandMore />}
               </ListItem>                    
               <Collapse in={openMenu} timeout="auto" unmountOnExit>
                 <List dense={true} component="div">
                   <ListItem button style={{paddingLeft: 30}} onClick={() => this.showFileOpen()}>
-                    <ListItemIcon><Icon path={mdiFolder} size={'1.0rem'} color={iconColor} /></ListItemIcon>
+                    <ListItemIcon><Icon path={mdiFolder} size={'1.0rem'} color={iconColor1} /></ListItemIcon>
                     <ListItemText classes={primaryClass} 
                       primary={
                         <Typography type="body1" style={{fontSize: '0.80em', marginLeft: '-20px'}}>File</Typography>
                       } />
                   </ListItem>
-                  <ListItem button style={{paddingLeft: 30}} onClick={() => this.showOpenUrl()}>
+                  {/* <ListItem button style={{paddingLeft: 30}} onClick={() => this.showOpenUrl()}>
                     <ListItemIcon><Icon path={mdiWeb} size={'1.0rem'} color={iconColor} /></ListItemIcon>
                     <ListItemText classes={primaryClass} 
                       primary={
                         <Typography type="body1" style={{fontSize: '0.80em', marginLeft: '-20px'}}>URL</Typography>
                       } />
-                  </ListItem>
+                  </ListItem> */}
                   { isInputDirSupported() && !isMobile?
                   <ListItem button style={{paddingLeft: 30}} onClick={() => this.showOpenFolder()}>
-                    <ListItemIcon><Icon path={mdiFolderOpen} size={'1.0rem'} color={iconColor} /></ListItemIcon>
+                    <ListItemIcon><Icon path={mdiFolderOpen} size={'1.0rem'} color={iconColor1} /></ListItemIcon>
                     <ListItemText classes={primaryClass} 
                       primary={
                         <Typography type="body1" style={{fontSize: '0.80em', marginLeft: '-20px'}}>Folder</Typography>
@@ -2002,24 +1913,24 @@ class App extends PureComponent {
               </Collapse>  
 
               <ListItem button onClick={() => this.clear()}>
-                <ListItemIcon><Icon path={mdiDelete} size={iconSize} color={iconColor} /></ListItemIcon>
+                <ListItemIcon><Icon path={mdiDelete} size={iconSize} color={iconColor1} /></ListItemIcon>
                 <ListItemText classes={primaryClass} primary='Clear All' />
               </ListItem>  
               <ListItem button onClick={this.handleLayout}>
-                <ListItemIcon><Icon path={mdiViewGridPlusOutline} size={iconSize} color={iconColor} /></ListItemIcon>
+                <ListItemIcon><Icon path={mdiViewGridPlusOutline} size={iconSize} color={iconColor1} /></ListItemIcon>
                 <ListItemText classes={primaryClass} primary='Layout' />              
               </ListItem>   
               <ListItem button onClick={() => this.showSettings()}>
-                <ListItemIcon><Icon path={mdiCog} size={iconSize} color={iconColor} /></ListItemIcon>
+                <ListItemIcon><Icon path={mdiCog} size={iconSize} color={iconColor1} /></ListItemIcon>
                 <ListItemText classes={primaryClass} primary='Settings' />
               </ListItem>                
               <Divider />
               <ListItem button onClick={() => this.toggleToolbox()} disabled={!isOpen}>
-                <ListItemIcon><Icon path={mdiChartHistogram} size={iconSize} color={iconColor} /></ListItemIcon>
+                <ListItemIcon><Icon path={mdiChartHistogram} size={iconSize} color={iconColor1} /></ListItemIcon>
                 <ListItemText classes={primaryClass} primary='Histogram' />
               </ListItem>  
               <ListItem button onClick={() => this.toggleMpr()} disabled={!isOpen || this.mprPlane === ''}>
-                <ListItemIcon><Icon path={mdiAxisArrow} size={iconSize} color={iconColor} /></ListItemIcon>
+                <ListItemIcon><Icon path={mdiAxisArrow} size={iconSize} color={iconColor1} /></ListItemIcon>
                 <ListItemText classes={primaryClass} primary='MPR' />
                 {mprMenu ? <ExpandLess /> : <ExpandMore />}
               </ListItem>            
@@ -2037,7 +1948,7 @@ class App extends PureComponent {
                   </ListItem>
 */}
                   <ListItem button style={{paddingLeft: 40}} onClick={() => this.mprOrthogonal()}>
-                    {visibleMprOrthogonal ? <ListItemIcon style={{marginLeft: '-10px'}}><Icon path={mdiCheck} size={'1.0rem'} color={iconColor} /></ListItemIcon> : null}
+                    {visibleMprOrthogonal ? <ListItemIcon style={{marginLeft: '-10px'}}><Icon path={mdiCheck} size={'1.0rem'} color={iconColor1} /></ListItemIcon> : null}
                     <ListItemText 
                       style={visibleMprOrthogonal ? {marginLeft: '-7px'} : {marginLeft: '40px'}}
                       primary={
@@ -2045,7 +1956,7 @@ class App extends PureComponent {
                       } />
                   </ListItem>
                   <ListItem button style={{paddingLeft: 40}} onClick={() => this.mprCoronal()}>
-                    {visibleMprCoronal ? <ListItemIcon style={{marginLeft: '-10px'}}><Icon path={mdiCheck} size={'1.0rem'} color={iconColor} /></ListItemIcon> : null}
+                    {visibleMprCoronal ? <ListItemIcon style={{marginLeft: '-10px'}}><Icon path={mdiCheck} size={'1.0rem'} color={iconColor1} /></ListItemIcon> : null}
                     <ListItemText 
                       style={visibleMprCoronal ? {marginLeft: '-7px'} : {marginLeft: '40px'}}
                       primary={
@@ -2053,7 +1964,7 @@ class App extends PureComponent {
                       } />
                   </ListItem>    
                   <ListItem button style={{paddingLeft: 40}} onClick={() => this.mprSagittal()}>
-                    {visibleMprSagittal ? <ListItemIcon style={{marginLeft: '-10px'}}><Icon path={mdiCheck} size={'1.0rem'} color={iconColor} /></ListItemIcon> : null}  
+                    {visibleMprSagittal ? <ListItemIcon style={{marginLeft: '-10px'}}><Icon path={mdiCheck} size={'1.0rem'} color={iconColor1} /></ListItemIcon> : null}  
                     <ListItemText 
                       style={visibleMprSagittal ? {marginLeft: '-7px'} : {marginLeft: '40px'}}
                       primary={
@@ -2061,7 +1972,7 @@ class App extends PureComponent {
                       } />
                   </ListItem>    
                   <ListItem button style={{paddingLeft: 40}} onClick={() => this.mprAxial()}>
-                    {visibleMprAxial ? <ListItemIcon style={{marginLeft: '-10px'}}><Icon path={mdiCheck} size={'1.0rem'} color={iconColor} /></ListItemIcon> : null}  
+                    {visibleMprAxial ? <ListItemIcon style={{marginLeft: '-10px'}}><Icon path={mdiCheck} size={'1.0rem'} color={iconColor1} /></ListItemIcon> : null}  
                     <ListItemText 
                       style={visibleMprAxial ? {marginLeft: '-7px'} : {marginLeft: '40px'}}
                       primary={
@@ -2072,20 +1983,20 @@ class App extends PureComponent {
               </Collapse>  
 
               <ListItem button onClick={() => this.toggleImageEdit()} disabled={!isOpen}>
-                <ListItemIcon><Icon path={mdiImageEdit} size={iconSize} color={iconColor} /></ListItemIcon>
+                <ListItemIcon><Icon path={mdiImageEdit} size={iconSize} color={iconColor1} /></ListItemIcon>
                 <ListItemText classes={primaryClass} primary='Edit' />
                 {openImageEdit ? <ExpandLess /> : <ExpandMore />}
               </ListItem>          
               <Collapse in={openImageEdit} timeout="auto" unmountOnExit>
                 <List dense={true} component="div">
                   <ListItem button style={{paddingLeft: 30}} onClick={() => this.toolExecute('Invert')}>
-                    <ListItemIcon><Icon path={mdiInvertColors} size={iconSize} color={iconColor} /></ListItemIcon>
+                    <ListItemIcon><Icon path={mdiInvertColors} size={iconSize} color={iconColor1} /></ListItemIcon>
                     <ListItemText classes={primaryClass} primary="Invert" />
                   </ListItem>
                 </List>
               </Collapse>   
               <ListItem button onClick={() => this.toggleTools()} disabled={!isOpen}>
-                <ListItemIcon><Icon path={mdiTools} size={iconSize} color={iconColor} /></ListItemIcon>
+                <ListItemIcon><Icon path={mdiTools} size={iconSize} color={iconColor1} /></ListItemIcon>
                 <ListItemText classes={primaryClass} primary='Tools' />
                 {openTools ? <ExpandLess /> : <ExpandMore />}
               </ListItem>   
@@ -2100,7 +2011,7 @@ class App extends PureComponent {
                     />
                   </ListItem>     
                   <ListItem button style={{paddingLeft: 30}} onClick={() => this.toolExecute('referencelines')} disabled={!isOpen}>
-                    <ListItemIcon><Icon path={mdiArrowSplitHorizontal} size={iconSizeSmall} color={visibleReferenceLines ? activeColor : iconColor} /></ListItemIcon>
+                    <ListItemIcon><Icon path={mdiArrowSplitHorizontal} size={iconSizeSmall} color={visibleReferenceLines ? activeColor : iconColor1} /></ListItemIcon>
                     <ListItemText classes={primaryClass}
                       primary={
                         <Typography type="body1" style={{fontSize: '0.80em', marginLeft: '-23px'}}>Reference Lines</Typography>
@@ -2108,7 +2019,7 @@ class App extends PureComponent {
                     />
                   </ListItem>        
                   <ListItem button style={{paddingLeft: 30}} onClick={() => this.toolExecute('serieslink')} disabled={!isOpen}>
-                    <ListItemIcon><Icon path={mdiVectorLink} size={iconSizeSmall} color={visibleSeriesLink ? activeColor : iconColor} /></ListItemIcon>
+                    <ListItemIcon><Icon path={mdiVectorLink} size={iconSizeSmall} color={visibleSeriesLink ? activeColor : iconColor1} /></ListItemIcon>
                     <ListItemText classes={primaryClass}
                       primary={
                         <Typography type="body1" style={{fontSize: '0.80em', marginLeft: '-23px'}}>Link Series</Typography>

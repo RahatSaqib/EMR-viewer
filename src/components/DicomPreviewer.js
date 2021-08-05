@@ -76,7 +76,6 @@ class DicomPreviewer extends React.Component {
     }
 
     componentDidUpdate(previousProps) {
-      //console.log('dicomviewer - componentDidUpdate: ')
     }
 
     onOpenUrl = (e) => {
@@ -139,7 +138,6 @@ class DicomPreviewer extends React.Component {
     }
    
     onImageLoaded = (e) => {
-      //console.log('cornerstoneimageloaded: ')
     }
 
     // Listen for changes to the viewport so we can update the text overlays in the corner
@@ -315,7 +313,6 @@ class DicomPreviewer extends React.Component {
         }, (e) => {
           console.log('error', e)   
           this.hideOpenUrlDlg()      
-          //console.log('toString: ', e.error.toString())
           const error = e.error.toString()
           if (error === '[object XMLHttpRequest]') {
             this.setState({errorOnCors: true})
@@ -377,7 +374,6 @@ class DicomPreviewer extends React.Component {
     }
 
     onImageClick = () => {
-      //console.log('onImageClick: ')
     }
 
     getSeriesNumber = () => {
@@ -404,9 +400,6 @@ class DicomPreviewer extends React.Component {
       const progress = this.state.progress
       
       this.sliceMax = this.getSeriesLength()
-
-      //console.log('this.props.explorerActiveSeriesIndex: ', this.props.explorerActiveSeriesIndex)
-      //console.log('this.props.index: ', this.props.index)
       
       const styleContainer = {
         width: '100%', 
@@ -443,6 +436,7 @@ class DicomPreviewer extends React.Component {
             </DialogActions>
           </Dialog>
 
+{/* 
           <Dialog
             open={this.state.errorOnCors}
             onClose={this.onErrorCorsClose}
@@ -471,7 +465,7 @@ class DicomPreviewer extends React.Component {
                 Ok
               </Button>
             </DialogActions>
-          </Dialog>
+          </Dialog> */}
 
           <div
             style={{
