@@ -1,0 +1,25 @@
+{
+  "files": {
+    "main.css": "/xray/dicom_files/static/css/main.63423598.chunk.css",
+    "main.js": "/xray/dicom_files/static/js/main.5b683753.chunk.js",
+    "main.js.map": "/xray/dicom_files/static/js/main.5b683753.chunk.js.map",
+    "runtime-main.js": "/xray/dicom_files/static/js/runtime-main.78a95d1f.js",
+    "runtime-main.js.map": "/xray/dicom_files/static/js/runtime-main.78a95d1f.js.map",
+    "static/css/2.18fb2ca0.chunk.css": "/xray/dicom_files/static/css/2.18fb2ca0.chunk.css",
+    "static/js/2.f70e8ff5.chunk.js": "/xray/dicom_files/static/js/2.f70e8ff5.chunk.js",
+    "static/js/2.f70e8ff5.chunk.js.map": "/xray/dicom_files/static/js/2.f70e8ff5.chunk.js.map",
+    "index.html": "/xray/dicom_files/index.html",
+    "precache-manifest.718c50da3ecaa49a415055b89da74076.js": "/xray/dicom_files/precache-manifest.718c50da3ecaa49a415055b89da74076.js",
+    "service-worker.js": "/xray/dicom_files/service-worker.js",
+    "static/css/2.18fb2ca0.chunk.css.map": "/xray/dicom_files/static/css/2.18fb2ca0.chunk.css.map",
+    "static/css/main.63423598.chunk.css.map": "/xray/dicom_files/static/css/main.63423598.chunk.css.map",
+    "static/js/2.f70e8ff5.chunk.js.LICENSE.txt": "/xray/dicom_files/static/js/2.f70e8ff5.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.78a95d1f.js",
+    "static/css/2.18fb2ca0.chunk.css",
+    "static/js/2.f70e8ff5.chunk.js",
+    "static/css/main.63423598.chunk.css",
+    "static/js/main.5b683753.chunk.js"
+  ]
+}

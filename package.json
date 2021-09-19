@@ -1,8 +1,8 @@
 {
-  "name": "u-dicom-viewer",
+  "name": "EMR Viewer",
   "version": "0.8.1",
   "private": true,
-  "homepage": "https://webnamics.github.io/u-dicom-viewer/",
+  "homepage": "https://srait.org/xray/dicom_files",
   "dependencies": {
     "@material-ui/core": "^4.11.0",
     "@material-ui/icons": "^4.9.1",
