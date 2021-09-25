@@ -42,7 +42,7 @@ import Tooltip from '@material-ui/core/Tooltip'
 import Typography from '@material-ui/core/Typography'
 import 'react-perfect-scrollbar/dist/css/styles.css'
 import PerfectScrollbar from 'react-perfect-scrollbar'
-
+import Footer from './components/Footer'
 
 import { 
   isMobile, 
@@ -998,7 +998,7 @@ class App extends PureComponent {
       else 
         return (
           <Typography variant="overline" className={classes.title}>
-            <strong>AMAAR</strong> <strong>V</strong>iewer
+            <strong>EMR</strong> <strong>V</strong>iewer
           </Typography>          
         )
     } else {
@@ -1025,7 +1025,7 @@ class App extends PureComponent {
       } else
         return (
           <Typography variant="overline" className={classes.title}>
-           <strong>AMAR</strong> <strong>V</strong>iewer
+           <strong>EMR</strong> <strong>V</strong>iewer
           </Typography>
         )
     }
@@ -1825,14 +1825,14 @@ class App extends PureComponent {
               </Tooltip>
               ) : null
             }  
-            { isDicomdir ? (
+            {/* { isDicomdir ? (
               <Tooltip title="DICOMDIR">
                 <IconButton color="inherit" onClick={this.toggleDicomdir}>
                   <Icon path={mdiFolderOpen} size={iconSize} color={iconColor} />
                 </IconButton>
               </Tooltip>
               ) : null
-            }    
+            }     */}
             { (isOpen && this.isMultipleFiles) || visibleMprOrthogonal ? (
               <Tooltip title="Explorer">
                 <IconButton color="inherit" onClick={this.toggleExplorer}>
@@ -1850,6 +1850,7 @@ class App extends PureComponent {
               ) : null
             }                        
           </Toolbar>
+          
         </AppBar>
 
         <Drawer 
@@ -2147,9 +2148,12 @@ class App extends PureComponent {
                 </div>
               </div> : null
             }
+            
 
-          </PerfectScrollbar>   
+          </PerfectScrollbar>  
+          
           </div>
+          <Footer/> 
         </Drawer>       
 
         <Drawer
@@ -2198,7 +2202,7 @@ class App extends PureComponent {
             </div>
           </div>
         </Drawer>          
-
+        
         <Drawer
           variant="persistent"
           anchor={getSettingsDicomdirView()}
@@ -2422,8 +2426,9 @@ class App extends PureComponent {
             webkitdirectory="" mozdirectory="" directory="" multiple
           />
         </div>    
-
+        <Footer/>
       </div>
+      
     )
   }
 }

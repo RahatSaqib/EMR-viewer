@@ -38,7 +38,7 @@ const AboutDlg = ({ onClose }) => {
         <Dialog onClose={onClose} open={true}>
             <DialogTitle onClose={onClose} disableTypography={true}>
                 <Typography variant='h6'>
-                    About <strong>D</strong>icom <strong>V</strong>iewer
+                    About <strong>E</strong>MR<strong>V</strong>iewer
                 </Typography>
             </DialogTitle>
             <DialogContent>
